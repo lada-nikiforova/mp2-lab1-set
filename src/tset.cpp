@@ -9,13 +9,13 @@
 #include "tbitfield.h"
 #include "tset.h"
 
-TSet::TSet(size_t mp) : bitField(mp), maxPower(mp) {}
+TSet::TSet(size_t mp) : bitField(mp) { maxPower = mp; }
 
 // конструктор копирования
-TSet::TSet(const TSet& s) : bitField(s.bitField), maxPower(s.maxPower) {}
+TSet::TSet(const TSet& s) : bitField(s.bitField) { maxPower = s.maxPower; }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField& bf) : bitField(bf), maxPower(bf.getLength()) {}
+TSet::TSet(const TBitField& bf) : bitField(bf) { maxPower = bf.getLength(); }
 
 TSet::operator TBitField()
 {

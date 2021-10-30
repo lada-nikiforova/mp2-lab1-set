@@ -24,7 +24,7 @@ TBitField::TBitField(size_t len)
     }
 }
 
-TBitField::TBitField(const TBitField& bf) // конструктор копирования
+TBitField::TBitField(const TBitField &bf) // конструктор копирования
 {
     bitLen = bf.bitLen;
     memLen = bf.memLen;
@@ -41,20 +41,14 @@ TBitField::~TBitField()
 
 size_t TBitField::getIndex(const size_t n) const  // индекс в pМем для бита n
 {
-    if (n < 0 || n >= bitLen)
-    {
-        throw n;
-    }
+  
     return (n / 32);
 
 }
 
 uint TBitField::getMask(const size_t n) const // битовая маска для бита n
 {
-    if (n < 0 || n >= bitLen)
-    {
-        throw n;
-    }
+    
     return (1 << (n % 32));
 }
 
@@ -176,13 +170,7 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
         {
             res.pMem[i] = pMem[i];
         }
-        for (int i = (memLen - 1) * 32; i < bitLen; i++)
-        {
-            if (getBit(i))
-            {
-                res.setBit(i);
-            }
-        }
+       
         for (int i = 0; i < bf.memLen; i++)
         {
             res.pMem[i] |= bf.pMem[i];
@@ -194,13 +182,7 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
         {
             res.pMem[i] = bf.pMem[i];
         }
-        for (int i = (bf.memLen - 1) * 32; i < bf.bitLen; i++)
-        {
-            if (bf.getBit(i))
-            {
-                res.setBit(i);
-            }
-        }
+      
         for (int i = 0; i < memLen; i++)
         {
             res.pMem[i] |= pMem[i];
@@ -285,7 +267,7 @@ TBitField TBitField::operator~(void) // отрицание
 
 TBitField::~TBitField()
 {
-
+    delete[] pMem;
 }
 
 // ввод/вывод
@@ -326,5 +308,5 @@ std::ostream& operator<<(std::ostream& ostr, const TBitField& bf) // вывод
         }
     }
     return ostr;
-    return ostr;
+  
 }
