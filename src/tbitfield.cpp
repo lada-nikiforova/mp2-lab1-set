@@ -55,6 +55,11 @@ uint TBitField::getLength() const // получить длину (к-во бит
     return bitLen;
 }
 
+size_t TBitField::getNumBytes() const // получить количество байт выделенной памяти
+{
+    return memLen * sizeof(uint);
+}
+
 void TBitField::setBit(const size_t n) // установить бит
 {
     if (n < 0 || n >= bitLen)
@@ -105,11 +110,6 @@ TBitField& TBitField::operator=(const TBitField& bf) // присваивание
         {
             pMem[i] = bf.pMem[i];
         }
-        for (int i = (memLen - 1) * 32; i < bitLen; i++)
-        {
-            if (bf.getBit(i))
-                setBit(i);
-        }
     }
     return *this;
 }
@@ -120,16 +120,9 @@ bool TBitField::operator==(const TBitField& bf) const // сравнение
     {
         if (bitLen != bf.bitLen)
             return false;
-        for (int i = 0; i < memLen - 1; i++)
+        for (int i = 0; i < memLen; i++)
         {
             if (pMem[i] != bf.pMem[i])
-            {
-                return false;
-            }
-        }
-        for (int i = (memLen - 1) * 32; i < bitLen; i++)
-        {
-            if (getBit(i) != bf.getBit(i))
             {
                 return false;
             }

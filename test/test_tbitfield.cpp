@@ -12,6 +12,13 @@ TEST(TBitField, can_get_length)
     EXPECT_EQ(3, bf.getLength());
 }
 
+TEST(TBitField, len_bitfield_with_zero_length)
+{
+    TBitField bf(0);
+    EXPECT_EQ(0, bf.getLength());
+    EXPECT_EQ(0, bf.getNumBytes());
+}
+
 TEST(TBitField, new_bitfield_is_set_to_zero)
 {
     TBitField bf(100);
@@ -272,3 +279,41 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
 
     EXPECT_NE(bf1, bf2);
 }
+
+TEST(TBitField, can_set_bit_twice)
+{
+    const size_t size = 4;
+    TBitField bf1(size), bf2(size);
+    bf1.setBit(1);
+    bf1.setBit(1);
+    bf2.setBit(1);
+    EXPECT_EQ(bf1, bf2);
+
+}
+TEST(TBitField, can_clear_bit_twice)
+{
+    const size_t size = 4;
+    TBitField bf1(size), bf2(size);
+    bf1.setBit(1);
+    bf1.clrBit(1);
+    bf1.clrBit(1);
+    EXPECT_EQ(bf1, bf2);
+}
+
+TEST(TBitField, throws_when_create_bitfield_with_negative_length)
+{
+    ASSERT_ANY_THROW(TBitField bf(-19););
+    ASSERT_ANY_THROW(TBitField bf(-84););
+}
+
+TEST(TBitField, can_assign_itself)
+{
+    const size_t size = 10;
+    TBitField bf(size);
+    for (size_t i = 0; i < size; i++)
+        bf.setBit(i);
+    TBitField testBf(bf);
+    bf = bf;
+    EXPECT_EQ(testBf, bf);
+}
+

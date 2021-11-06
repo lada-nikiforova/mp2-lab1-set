@@ -28,6 +28,7 @@ public:
 
     // доступ к битам
     uint getLength() const;            // получить длину (к-во битов)
+    size_t getNumBytes() const;        // получить количество байт выделенной памяти
     void setBit(const size_t n);       // установить бит
     void clrBit(const size_t n);       // очистить бит
     bool getBit(const size_t n) const; // получить значение бита
