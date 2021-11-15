@@ -62,11 +62,6 @@ size_t TBitField::getNumBytes() const // получить количество �
 
 void TBitField::setBit(const size_t n) // установить бит
 {
-    return memLen * sizeof(uint);
-}
-
-void TBitField::setBit(const size_t n) // установить бит
-{
     if (n < 0 || n >= bitLen)
     {
         throw n;
