@@ -11,10 +11,6 @@
 
 TBitField::TBitField(size_t len)
 {
-    if (len <= 0)
-    {
-        throw len;
-    }
     bitLen = len;
     memLen = len / 32 + 1;
     pMem = new uint[memLen];
@@ -84,14 +80,8 @@ void TBitField::clrBit(const size_t n) // очистить бит
 
 bool TBitField::getBit(const size_t n) const // получить значение бита
 {
-    if (n < 0 || n >= bitLen)
-    {
-        throw n;
-    }
-    int i = getIndex(n);
-    uint m = getMask(n);
-    return (pMem[i] & m);
-    return false;
+    if (n >= bitLen) throw "Out of range";
+    return pMem[getIndex(n)] & getMask(n);
 }
 
 // битовые операции
@@ -116,18 +106,13 @@ TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 
 bool TBitField::operator==(const TBitField& bf) const // сравнение
 {
-    if (this != &bf)
-    {
-        if (bitLen != bf.bitLen)
+   if (bitLen != bf.bitLen)
             return false;
-        for (int i = 0; i < memLen; i++)
-        {
+   for (int i = 0; i < memLen; i++)
             if (pMem[i] != bf.pMem[i])
             {
                 return false;
             }
-        }
-    }
     return true;
 }
 
@@ -229,18 +214,14 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 TBitField TBitField::operator~(void) // отрицание
 {
     TBitField mask(bitLen);
-    for (int i = 0; i < mask.getLength(); i++)
+    for (int i = 0; i < bitLen; i++)
     {
-        mask.setBit(i);
+        if (getBit(i) == false) {
+            mask.setBit(i);
+        }
     }
-    for (int i = 0; i < (*this).getLength(); i++)
-    {
-        (*this).pMem[i] = ~pMem[i];
-        (*this).pMem[i] = (*this).pMem[i] & mask.pMem[i];
-    }
-
-    return (*this);
-    return TBitField(1);
+    return mask;
+ 
 }
 
 TBitField::~TBitField()
@@ -286,5 +267,4 @@ std::ostream& operator<<(std::ostream& ostr, const TBitField& bf) // вывод
         }
     }
     return ostr;
-  
 }
