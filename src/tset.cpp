@@ -19,8 +19,7 @@ TSet::TSet(const TBitField& bf) : bitField(bf) { maxPower = bf.getLength(); }
 
 TSet::operator TBitField()
 {
-    TBitField tmp(maxPower);
-    tmp = bitField;
+    TBitField tmp(bitField);
     return tmp;
 }
 
@@ -58,25 +57,24 @@ TSet& TSet::operator=(const TSet& s) // присваивание
 
 bool TSet::operator==(const TSet& s) const // сравнение
 {
-    if (maxPower != s.maxPower)
+    if (maxPower != s.maxPower || bitField != s.bitField)
         return false;
-    if (bitField != s.bitField)
-        return false;
-    return true;
+    else
+        return true;
 }
 
 bool TSet::operator!=(const TSet& s) const // сравнение
 {
-    if (maxPower != s.maxPower)
+    if (maxPower == s.maxPower && bitField == s.bitField)
+        return false;
+    else
         return true;
-    if (bitField != s.bitField)
-        return true;
-    return false;
 }
 
 TSet TSet::operator+(const TSet& s) // объединение
 {
-    return (bitField | s.bitField);
+    TSet res(bitField | s.bitField);
+    return (res);
 }
 
 TSet TSet::operator+(const uint elem) // объединение с элементом
@@ -95,24 +93,21 @@ TSet TSet::operator-(const uint elem) // разность с элементом
 
 TSet TSet::operator*(const TSet& s) // пересечение
 {
-    return (bitField & s.bitField);
+    TSet res(bitField & s.bitField);
+    return (res);
 }
 
 TSet TSet::operator~() // дополнение
 {
-    return (~bitField);
+    ~bitField;
+    return (*this);
 }
 
 // перегрузка ввода/вывода
 std::istream& operator>>(std::istream& istr, TSet& s) // ввод
 {
-    int x;
-    istr >> x;
-    while (x >= 0 && x < s.maxPower)
-    {
-        s.insElem(x);
-        istr >> x;
-    }
+    istr >> s.bitField;
+    s.maxPower = s.bitField.getLength();
     return istr;
 }
 

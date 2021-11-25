@@ -89,13 +89,10 @@ TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 {
     if (this != &bf)
     {
-        if (bitLen != bf.bitLen)
-        {
-            delete[] pMem;
-            memLen = bf.memLen;
-            bitLen = bf.bitLen;
-            pMem = new uint[memLen];
-        }
+        delete[] pMem;
+        memLen = bf.memLen;
+        bitLen = bf.bitLen;
+        pMem = new uint[memLen];
         for (int i = 0; i < memLen - 1; i++)
         {
             pMem[i] = bf.pMem[i];
@@ -141,7 +138,7 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
     TBitField res(max);
     if (flag == 0)
     {
-        for (int i = 0; i < memLen - 1; i++)
+        for (int i = 0; i < memLen; i++)
         {
             res.pMem[i] = pMem[i];
         }
@@ -186,7 +183,7 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
     TBitField res(max);
     if (flag == 0)
     {
-        for (int i = 0; i < memLen - 1; i++)
+        for (int i = 0; i < memLen; i++)
         {
             res.pMem[i] = pMem[i];
         }
@@ -213,14 +210,16 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 
 TBitField TBitField::operator~(void) // отрицание
 {
-    TBitField mask(bitLen);
     for (int i = 0; i < bitLen; i++)
     {
-        if (getBit(i) == false) {
-            mask.setBit(i);
+        if (getBit(i) == 0)
+        {
+            setBit(i);
         }
+        else
+            clrBit(i);
     }
-    return mask;
+    return (*this);
  
 }
 

@@ -285,7 +285,7 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
     EXPECT_NE(bf1, bf2);
 }
 
-TEST(TBitField, can_set_bit_twice)
+ TEST(TBitField, can_set_bit_twice)
 {
     const size_t size = 4;
     TBitField bf1(size), bf2(size);
@@ -321,4 +321,5 @@ TEST(TBitField, can_assign_itself)
     bf = bf;
     EXPECT_EQ(testBf, bf);
 }
+
 
