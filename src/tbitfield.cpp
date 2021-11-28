@@ -35,6 +35,10 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
 size_t TBitField::getIndex(const size_t n) const  // индекс в pМем для бита n
 {
   
+    if (n < 0 || n >= bitLen)
+    {
+        throw n;
+    }
     return (n / 32);
 
 }
@@ -42,6 +46,10 @@ size_t TBitField::getIndex(const size_t n) const  // индекс в pМем д�
 uint TBitField::getMask(const size_t n) const // битовая маска для бита n
 {
     
+    if (n < 0 || n >= bitLen)
+    {
+        throw n;
+    }
     return (1 << (n % 32));
 }
 
@@ -104,13 +112,13 @@ TBitField& TBitField::operator=(const TBitField& bf) // присваивание
 bool TBitField::operator==(const TBitField& bf) const // сравнение
 {
    if (bitLen != bf.bitLen)
-            return false;
+            return 0;
    for (int i = 0; i < memLen; i++)
             if (pMem[i] != bf.pMem[i])
             {
-                return false;
+                return 0;
             }
-    return true;
+    return 1;
 }
 
 bool TBitField::operator!=(const TBitField& bf) const // сравнение
@@ -120,6 +128,7 @@ bool TBitField::operator!=(const TBitField& bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
+int i;
     if (this == &bf)
     {
         TBitField res(*this);
@@ -138,24 +147,24 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
     TBitField res(max);
     if (flag == 0)
     {
-        for (int i = 0; i < memLen; i++)
+        for (i = 0; i < memLen; i++)
         {
             res.pMem[i] = pMem[i];
         }
        
-        for (int i = 0; i < bf.memLen; i++)
+        for (i = 0; i < bf.memLen; i++)
         {
             res.pMem[i] |= bf.pMem[i];
         }
     }
     else
     {
-        for (int i = 0; i < bf.memLen - 1; i++)
+        for (i = 0; i < bf.memLen - 1; i++)
         {
             res.pMem[i] = bf.pMem[i];
         }
       
-        for (int i = 0; i < memLen; i++)
+        for (i = 0; i < memLen; i++)
         {
             res.pMem[i] |= pMem[i];
         }
@@ -164,7 +173,8 @@ TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 }
 
 TBitField TBitField::operator&(const TBitField& bf) // операция "и"
-{
+{ 
+int i;
     if (this == &bf)
     {
         TBitField res(*this);
@@ -183,24 +193,24 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
     TBitField res(max);
     if (flag == 0)
     {
-        for (int i = 0; i < memLen; i++)
+        for (i = 0; i < memLen; i++)
         {
             res.pMem[i] = pMem[i];
         }
         
-        for (int i = 0; i < memLen; i++)
+        for (i = 0; i < memLen; i++)
         {
             res.pMem[i] &= bf.pMem[i];
         }
     }
     else
     {
-        for (int i = 0; i < bf.memLen - 1; i++)
+        for (i = 0; i < bf.memLen - 1; i++)
         {
             res.pMem[i] = bf.pMem[i];
         }
       
-        for (int i = 0; i < bf.memLen; i++)
+        for (i = 0; i < bf.memLen; i++)
         {
             res.pMem[i] &= pMem[i];
         }
@@ -267,3 +277,4 @@ std::ostream& operator<<(std::ostream& ostr, const TBitField& bf) // вывод
     }
     return ostr;
 }
+

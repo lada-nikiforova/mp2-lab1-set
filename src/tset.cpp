@@ -31,9 +31,9 @@ size_t TSet::getMaxPower() const // получить макс. к-во эл-то
 bool TSet::isMember(const uint elem) const // элемент множества?
 {
     if (bitField.getBit(elem))
-        return true;
+        return 1;
     else
-        return false;
+        return 0;
 }
 
 void TSet::insElem(const uint elem) // включение элемента множества
@@ -58,17 +58,17 @@ TSet& TSet::operator=(const TSet& s) // присваивание
 bool TSet::operator==(const TSet& s) const // сравнение
 {
     if (maxPower != s.maxPower || bitField != s.bitField)
-        return false;
+        return 1;
     else
-        return true;
+        return 0;
 }
 
 bool TSet::operator!=(const TSet& s) const // сравнение
 {
     if (maxPower == s.maxPower && bitField == s.bitField)
-        return false;
+        return 1;
     else
-        return true;
+        return 0;
 }
 
 TSet TSet::operator+(const TSet& s) // объединение
